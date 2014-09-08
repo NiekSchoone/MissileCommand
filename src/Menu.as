@@ -21,13 +21,15 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			//Starting "startMenu" function
 			startMenu();
 		}
 		
 		private function startMenu():void
 		{
+			//Adding startbutton
 			addChild(startButton);
-			startButton.x = stage.stageWidth/2 //<- change to size of button;
+			startButton.x = stage.stageWidth/2
 			startButton.y = 300;
 			
 			var buttonHolder:MovieClip = new MovieClip();
@@ -39,6 +41,7 @@ package
 		
 		private function click(e:MouseEvent):void
 		{
+			//Dispatching function if startbutton is clicked dispatch to "start" function in Main class
 			if (e.target == startButton)
 			{
 				dispatchEvent(new Event("startgame"));

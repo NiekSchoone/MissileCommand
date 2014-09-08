@@ -25,7 +25,7 @@ package
 		
 		public function update():void
 		{
-			this.y += 4 * speed;
+			this.y += 3 * speed;
 		}
 		
 	}

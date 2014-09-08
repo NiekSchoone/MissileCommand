@@ -10,10 +10,11 @@ package
 	 */
 	public class Game extends MovieClip
 	{
-		private var backGround : sSwatsica = new sSwatsica;
+		//private var backGround : sSwatsica = new sSwatsica;
 		
 		//Towers
 		private var towerArray : Array;
+		private var towerAmount : int = 3;
 		
 		//Missile
 		private var missileTimer : Timer;
@@ -34,16 +35,28 @@ package
 			addEventListener(Event.ENTER_FRAME, update);
 			
 			
-			//New Missile Array
+			//New missile array
 			missileArray = [];
 			
+			//New tower array
 			towerArray = [];
 			
-			addChild(backGround);
-			backGround.x = stage.stageWidth / 2;
-			backGround.y = stage.stageHeight / 2;
+			for (var t : int = 0; t < towerAmount; t++)
+			{
+				towerArray.push(new Tower);
+				addChild(towerArray[t]);
+				towerArray[t].x = stage.stageWidth / towerAmount * t + towerArray[t].width;
+				towerArray[t].y = stage.stageHeight;
+				
+			}
+			trace(towerArray.length);
 			
-			//Missile Spawn Timer
+			//Adding background image
+			/*addChild(backGround);
+			backGround.x = stage.stageWidth / 2;
+			backGround.y = stage.stageHeight / 2;*/
+			
+			//Missile spawn timer
 			missileTimer = new Timer(Math.random()*1000);
 			missileTimer.addEventListener(TimerEvent.TIMER, missileSpawner);
 			missileTimer.start();
@@ -61,11 +74,12 @@ package
 			
 		}
 		
+		
 		private function update(e:Event):void
 		{
 			
 			
-			//update Missiles
+			//Update missiles
 			var l : int = missileArray.length;
 			for (var i : int = 0 ; i < l ; i++ )
 			{

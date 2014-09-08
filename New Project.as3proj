@@ -53,6 +53,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib\Essentials.swc" />
+    <element path="lib\Assets.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
