@@ -28,12 +28,11 @@ package
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
-		private function init(e:Event = null):void 
+		private function init(e:Event = null):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			addEventListener(Event.ENTER_FRAME, update);
-			
 			
 			//New missile array
 			missileArray = [];
@@ -43,9 +42,9 @@ package
 			
 			for (var t : int = 0; t < towerAmount; t++)
 			{
-				towerArray.push(new Tower);
+				towerArray.push(new Tower());
 				addChild(towerArray[t]);
-				towerArray[t].x = stage.stageWidth / towerAmount * t + towerArray[t].width;
+				towerArray[t].x = stage.stageWidth / towerAmount * t + towerArray[t].width + 35;
 				towerArray[t].y = stage.stageHeight;
 				
 			}
@@ -71,14 +70,10 @@ package
 			missileArray.push(new MissileController());
 			stage.addChild(missileArray[missileArray.length - 1]);
 			missileArray[missileArray.length - 1].x = Math.random() * 600; 
-			
 		}
-		
 		
 		private function update(e:Event):void
 		{
-			
-			
 			//Update missiles
 			var l : int = missileArray.length;
 			for (var i : int = 0 ; i < l ; i++ )
@@ -86,8 +81,8 @@ package
 				missileArray[i].update();
 			}
 			
-		}
+		}	
 		
 	}
-
+	
 }

@@ -18,11 +18,15 @@ package
 		
 		private function init(e:Event = null):void 
 		{
-			tower = new cannon;
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			tower = new cannon();
 			
 			addChild(tower);
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, aimTower);
+			
+			stage.addEventListener(MouseEvent.CLICK, Shoot);
 			
 		}
 		private function aimTower(e:MouseEvent):void
@@ -38,6 +42,11 @@ package
 		public function get turretRotation() : Number
 		{
 			return tower.rotation;
+		}
+		
+		private function Shoot():void
+		{
+			
 		}
 	}
 
