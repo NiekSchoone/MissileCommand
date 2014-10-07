@@ -3,6 +3,7 @@ package
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.geom.Vector3D;
 	import flash.utils.Timer;
 	/**
 	 * ...
@@ -13,7 +14,7 @@ package
 		//private var backGround : sSwatsica = new sSwatsica;
 		
 		//Towers
-		private var towerArray : Array;
+		private var towerArray : Vector.<TowerClass> = new Vector.<TowerClass>;
 		private var towerAmount : int = 3;
 		
 		//Missile
@@ -38,22 +39,16 @@ package
 			missileArray = [];
 			
 			//New tower array
-			towerArray = [];
+			//towerArray = [];
 			
 			for (var t : int = 0; t < towerAmount; t++)
 			{
-				towerArray.push(new Tower());
+				towerArray.push(new TowerClass());
 				addChild(towerArray[t]);
 				towerArray[t].x = stage.stageWidth / towerAmount * t + towerArray[t].width + 35;
 				towerArray[t].y = stage.stageHeight;
 				
 			}
-			trace(towerArray.length);
-			
-			//Adding background image
-			/*addChild(backGround);
-			backGround.x = stage.stageWidth / 2;
-			backGround.y = stage.stageHeight / 2;*/
 			
 			//Missile spawn timer
 			missileTimer = new Timer(Math.random()*1000);
@@ -64,13 +59,31 @@ package
 		
 		private function missileSpawner (e:TimerEvent):void
 		{
+			if (towerArray.length == 0) return;
+			
+			var spawnPos : Vector3D = new Vector3D (Math.random() * stage.stageWidth, -10);
+			
+			var randomIndex : int = Math.random() * towerArray.length;
+			
+			var target : TowerClass = towerArray[randomIndex];
+			
+			var targetPos : Vector3D = new Vector3D (target.x, target.y);
+			
 			missileTimer.delay = Math.random() * 1500 + 500;
 			
 			//Spawnig the missiles
-			missileArray.push(new MissileController());
-			stage.addChild(missileArray[missileArray.length - 1]);
-			missileArray[missileArray.length - 1].x = Math.random() * 600; 
+			var newMissile:MissileWeapon = new MissileWeapon();
+			
+			newMissile.x = spawnPos.x; 
+			newMissile.y = spawnPos.y;
+			
+			newMissile.setTarget(targetPos);
+			
+			missileArray.push(newMissile);
+			addChild(newMissile);
+			
 		}
+		
 		
 		private function update(e:Event):void
 		{
@@ -81,7 +94,27 @@ package
 				missileArray[i].update();
 			}
 			
-		}	
+			for (var i:int = missileArray.length - 1; i >= 0 ; i--)
+			{
+				for (var towerIndex:int = towerArray.length - 1; towerIndex >= 0; towerIndex--)
+				{
+					if (missileArray[i].hitTestObject(towerArray[towerIndex]))
+					{
+						removeChild(missileArray[i]);
+						
+						removeChild(towerArray[towerIndex]);
+						
+						missileArray.splice(i,1);
+						
+						towerArray.splice(towerIndex, 1);
+						
+						break;
+					}
+				}
+			}
+		
+			
+		}
 		
 	}
 	

@@ -3,15 +3,19 @@ package
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	
 	/**
 	 * ...
 	 * @author Niek Schoone
 	 */
-	public class Tower extends MovieClip
+	
+	public class TowerClass extends MovieClip
 	{
+		private static const SHOOT : String = "shoot";
+		
 		private var tower : MovieClip;
 		
-		public function Tower() 
+		public function TowerClass() 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -26,7 +30,7 @@ package
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, aimTower);
 			
-			stage.addEventListener(MouseEvent.CLICK, Shoot);
+			//stage.addEventListener(MouseEvent.CLICK, Fire);
 			
 		}
 		private function aimTower(e:MouseEvent):void
@@ -44,10 +48,11 @@ package
 			return tower.rotation;
 		}
 		
-		private function Shoot():void
+		/*private function Fire():void
 		{
-			
-		}
+			dispatchEvent(new Event(SHOOT));
+		}*/
+		
 	}
 
 }

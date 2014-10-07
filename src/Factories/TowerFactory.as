@@ -4,10 +4,10 @@ package
 	 * ...
 	 * @author Niek Schoone
 	 */
-	public class Player 
+	public class TowerFactory 
 	{
 		
-		public function Player() 
+		public function TowerFactory() 
 		{
 			
 		}
