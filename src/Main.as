@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.media.Sound;
 	
 	
 	/**
@@ -11,8 +12,9 @@ package
 	 */
 	public class Main extends Sprite 
 	{
-		private var game : Game = new Game;
-		private var menu : Menu = new Menu;
+		private var game  : Game = new Game();
+		private var menu  : Menu = new Menu();
+		private var music : Sound = new BackgroundMusic();
 		
 		public function Main():void 
 		{
@@ -28,6 +30,7 @@ package
 			addChild(menu);
 			menu.addEventListener("startgame", start);
 			
+			music.play(0, 99999);
 		}
 		
 		private function start(e:Event):void

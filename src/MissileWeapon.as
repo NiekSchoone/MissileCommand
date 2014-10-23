@@ -1,20 +1,20 @@
 package  
 {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Vector3D;
 	/**
 	 * ...
 	 * @author Niek Schoone
 	 */
-	public class MissileWeapon extends MovieClip
+	public class MissileWeapon extends Sprite
 	{
 		private var missileVar : MovieClip;
 		
-		private var speed : Number = 4;
+		private var speed : Number = 3;
 		
 		private var velocity : Vector3D;
-		
 		
 		public function MissileWeapon() 
 		{
@@ -28,9 +28,10 @@ package
 			missileVar.scaleY = 0.3;
 			
 			
+			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
-		public function update():void
+		public function update(e:Event):void
 		{
 			this.x += velocity.x * speed;
 			this.y += velocity.y * speed;

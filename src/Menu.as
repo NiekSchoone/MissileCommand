@@ -3,13 +3,15 @@ package
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.display.StageDisplayState;
 	/**
 	 * ...
 	 * @author Niek Schoone
 	 */
 	public class Menu extends MovieClip
 	{
-		private var startButton : sSquare = new sSquare;
+		private var startButton : StartButton = new StartButton();
+		private var fullScreenButton : FullScreenButton = new FullScreenButton();
 		
 		public function Menu() 
 		{
@@ -27,15 +29,21 @@ package
 		
 		private function startMenu():void
 		{
-			//Adding startbutton
+			//Adding and positioning startButton
 			addChild(startButton);
 			startButton.x = stage.stageWidth/2
-			startButton.y = 300;
+			startButton.y = 200;
+			
+			//Adding and positioning fullscreenButton
+			addChild(fullScreenButton);
+			fullScreenButton.x = stage.stageWidth/2
+			fullScreenButton.y = 400;
 			
 			var buttonHolder:MovieClip = new MovieClip();
 			
 			addChild(buttonHolder);
 			buttonHolder.addChild(startButton);
+			buttonHolder.addChild(fullScreenButton);
 			buttonHolder.addEventListener(MouseEvent.CLICK, click);
 		}
 		
@@ -45,6 +53,11 @@ package
 			if (e.target == startButton)
 			{
 				dispatchEvent(new Event("startgame"));
+			}
+			
+			if (e.target == fullScreenButton)
+			{
+				stage.displayState = StageDisplayState.FULL_SCREEN;
 			}
 		}
 		

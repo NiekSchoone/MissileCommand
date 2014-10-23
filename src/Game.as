@@ -1,26 +1,29 @@
 package  
 {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Vector3D;
 	import flash.utils.Timer;
+	import Towers.*;
+	
 	/**
 	 * ...
 	 * @author Niek Schoone
 	 */
-	public class Game extends MovieClip
+	public class Game extends Sprite
 	{
-		//private var backGround : sSwatsica = new sSwatsica;
 		
 		//Towers
-		private var towerArray : Vector.<TowerClass> = new Vector.<TowerClass>;
-		private var towerAmount : int = 3;
+		private var towerArray 			: 	Vector.<playerTower> = new Vector.<playerTower>;
+		private var towerAmount 		: 	uint = 3;
 		
 		//Missile
-		private var missileTimer : Timer;
-		private var missileArray : Array;
+		private var missileTimer 		: 	Timer;
+		private var enemyMissileArray 	: 	Array;
 		
+		private var playerMissileArray 	: 	Array;
 		
 		public function Game()
 		{
@@ -35,29 +38,33 @@ package
 			
 			addEventListener(Event.ENTER_FRAME, update);
 			
+			var towerFactory : TowerFactory = new TowerFactory();
+			
 			//New missile array
-			missileArray = [];
+			enemyMissileArray = [];
 			
-			//New tower array
-			//towerArray = [];
+			playerMissileArray = [];
 			
+			//Spawning all the towers in from the factory
 			for (var t : int = 0; t < towerAmount; t++)
 			{
-				towerArray.push(new TowerClass());
-				addChild(towerArray[t]);
-				towerArray[t].x = stage.stageWidth / towerAmount * t + towerArray[t].width + 35;
-				towerArray[t].y = stage.stageHeight;
+				var newTower = towerFactory.addTower(TowerFactory.TOWER, this.stage, stage.stageWidth / towerAmount * t + 125, stage.stageHeight);
 				
+				var towerVar	:	playerTower = new playerTower();
+				towerVar.addEventListener("shoot", shoot);
+				
+				towerArray.push(newTower);
+				addChild(newTower);
 			}
 			
 			//Missile spawn timer
 			missileTimer = new Timer(Math.random()*1000);
-			missileTimer.addEventListener(TimerEvent.TIMER, missileSpawner);
+			missileTimer.addEventListener(TimerEvent.TIMER, enemyMissileSpawner);
 			missileTimer.start();
 			
 		}
 		
-		private function missileSpawner (e:TimerEvent):void
+		private function enemyMissileSpawner(e:TimerEvent):void
 		{
 			if (towerArray.length == 0) return;
 			
@@ -65,46 +72,56 @@ package
 			
 			var randomIndex : int = Math.random() * towerArray.length;
 			
-			var target : TowerClass = towerArray[randomIndex];
+			var target : playerTower = towerArray[randomIndex];
 			
 			var targetPos : Vector3D = new Vector3D (target.x, target.y);
 			
 			missileTimer.delay = Math.random() * 1500 + 500;
 			
 			//Spawnig the missiles
-			var newMissile:MissileWeapon = new MissileWeapon();
+			var newEnemyMissile : MissileWeapon = new MissileWeapon();
 			
-			newMissile.x = spawnPos.x; 
-			newMissile.y = spawnPos.y;
+			newEnemyMissile.x = spawnPos.x; 
+			newEnemyMissile.y = spawnPos.y;
 			
-			newMissile.setTarget(targetPos);
+			newEnemyMissile.setTarget(targetPos);
 			
-			missileArray.push(newMissile);
-			addChild(newMissile);
+			enemyMissileArray.push(newEnemyMissile);
+			addChild(newEnemyMissile);
 			
 		}
 		
+		private function shoot(e:Event):void
+		{
+			var newPlayerMissile : MissileWeapon = new MissileWeapon();
+			
+			playerMissileArray.push(newPlayerMissile);
+			addChild(newPlayerMissile);
+			
+			trace("shotsfired");
+		}
 		
 		private function update(e:Event):void
 		{
 			//Update missiles
-			var l : int = missileArray.length;
+			var l : int = enemyMissileArray.length;
 			for (var i : int = 0 ; i < l ; i++ )
 			{
-				missileArray[i].update();
+				enemyMissileArray[i].update(e);
 			}
 			
-			for (var i:int = missileArray.length - 1; i >= 0 ; i--)
+			//Destroy tower when hit by missile
+			for (var i:int = enemyMissileArray.length - 1; i >= 0 ; i--)
 			{
 				for (var towerIndex:int = towerArray.length - 1; towerIndex >= 0; towerIndex--)
 				{
-					if (missileArray[i].hitTestObject(towerArray[towerIndex]))
+					if (enemyMissileArray[i].hitTestObject(towerArray[towerIndex]))
 					{
-						removeChild(missileArray[i]);
+						removeChild(enemyMissileArray[i]);
 						
 						removeChild(towerArray[towerIndex]);
 						
-						missileArray.splice(i,1);
+						enemyMissileArray.splice(i,1);
 						
 						towerArray.splice(towerIndex, 1);
 						
@@ -112,10 +129,6 @@ package
 					}
 				}
 			}
-		
-			
 		}
-		
 	}
-	
 }
