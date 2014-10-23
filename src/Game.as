@@ -1,5 +1,6 @@
 package  
 {
+	import Entities.EntitiesFactory;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -7,6 +8,7 @@ package
 	import flash.geom.Vector3D;
 	import flash.utils.Timer;
 	import Towers.*;
+	import Entities.*;
 	
 	/**
 	 * ...
@@ -25,6 +27,8 @@ package
 		
 		private var playerMissileArray 	: 	Array;
 		
+		private var entitiesArray		:	Array;
+		
 		public function Game()
 		{
 			super();
@@ -40,10 +44,13 @@ package
 			
 			var towerFactory : TowerFactory = new TowerFactory();
 			
-			//New missile array
-			enemyMissileArray = [];
 			
-			playerMissileArray = [];
+			//New missile array
+			enemyMissileArray 	= 	[];
+			
+			playerMissileArray 	= 	[];
+			
+			entitiesArray		=	[];
 			
 			//Spawning all the towers in from the factory
 			for (var t : int = 0; t < towerAmount; t++)
@@ -62,6 +69,13 @@ package
 			missileTimer.addEventListener(TimerEvent.TIMER, enemyMissileSpawner);
 			missileTimer.start();
 			
+		}
+		
+		private function addEntities():void
+		{
+			var entitiesFactory : EntitiesFactory = new EntitiesFactory();
+			var newEntity = entitiesFactory.addEntity(EntitiesFactory.CAR, this.stage);
+			addChild(newEntity);
 		}
 		
 		private function enemyMissileSpawner(e:TimerEvent):void

@@ -9,12 +9,6 @@ package Entities
 	public class Entity extends Sprite
 	{
 		
-		internal function setLoc(xLocation:int, yLocation:int):void
-		{
-			x = xLocation;
-			y = yLocation;
-		}
-		
 		internal function spawnEntity():void
 		{
 			

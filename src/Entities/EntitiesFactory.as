@@ -10,14 +10,14 @@ package Entities
 		public static const GUY : uint = 0;
 		public static const CAR : uint = 0;
 		
-		public function addEntity(entityType:uint, target:Stage, xLocation:int, yLocation:int):Entity
+		public function addEntity(entityType:uint, target:Stage):Entity
 		{
 			var entity : Entity = this.createEntity(entityType);
 			
 			entity.spawnEntity();
-			entity.setLocation(xLocation, yLocation);
 			target.addChild(entity);
 			entity.initEntity();
+			return entity;
 		}
 		
 		private function createEntity(entityType : uint):Entity
