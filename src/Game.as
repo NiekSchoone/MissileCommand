@@ -71,7 +71,7 @@ package
 			
 		}
 		
-		private function addEntities():void
+		for (var c : int = 0; c < entityAmount; c++)
 		{
 			var entitiesFactory : EntitiesFactory = new EntitiesFactory();
 			var newEntity = entitiesFactory.addEntity(EntitiesFactory.CAR, this.stage);
